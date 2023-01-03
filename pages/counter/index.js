@@ -1,52 +1,32 @@
-import React, { useReducer } from 'react';
-import { ACTIONS, INITIAL_STATE } from '../../utils/initialstate';
+import React, { useState } from 'react';
+import { INITIAL_STATE } from '../../utils/initialstate';
 
-const initialState = {
-  count: INITIAL_STATE.COUNTER,
-  input: INITIAL_STATE.NUMBER,
-};
+const Counter = () => {
+  const [counter, setCounter] = useState(INITIAL_STATE.COUNTER);
+  const [number, setNumber] = useState(INITIAL_STATE.NUMBER);
 
-const reducer = (state, action) => {
-  switch (action.type) {
-    case ACTIONS.INC:
-      return { ...state, count: state.count + state.input };
-
-    case ACTIONS.DEC:
-      return { ...state, count: state.count - state.input };
-
-    case ACTIONS.INP:
-      return { ...state, input: action.payload.number };
-
-    default:
-      state;
-  }
-};
-
-const Counter2 = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
-
+  const increment = () => {
+    setCounter((prev) => Number(prev) + Number(number));
+  };
+  const decrement = () => {
+    setCounter((prev) => Number(prev) - Number(number));
+  };
   return (
     <div>
-      <h1>Counter With useReducer</h1>
+      <h1>Counter With useState</h1>
       <input
         type='number'
         placeholder='Enter the value'
-        value={state.input}
-        onChange={(e) =>
-          dispatch({
-            type: ACTIONS.INP,
-            payload: { number: Number(e.target.value) },
-          })
-        }
+        value={number}
+        onChange={(e) => setNumber(e.target.value)}
       />
-
       <div style={{ display: 'flex', gap: 20 }}>
-        <button onClick={() => dispatch({ type: ACTIONS.DEC })}>-</button>
-        <div>{state.count}</div>
-        <button onClick={() => dispatch({ type: ACTIONS.INC })}>+</button>
+        <button onClick={() => decrement()}>-</button>
+        <div>{counter}</div>
+        <button onClick={() => increment()}>+</button>
       </div>
     </div>
   );
 };
 
-export default Counter2;
+export default Counter;
